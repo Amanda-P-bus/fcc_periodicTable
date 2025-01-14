@@ -4,10 +4,12 @@
 
 ELEMENT_ENTERED=$1
  PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
+
+
 if [[ ! $ELEMENT_ENTERED ]]
 then
  echo "Please provide an element as an argument."
- read ELEMENT_ENTERED
+ exit
 fi
 
 #
@@ -37,7 +39,7 @@ NUM_BOIL=$($PSQL "SELECT boiling_point_celsius FROM properties FULL JOIN element
 NUM_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id = properties.type_id WHERE properties.ref='$NUMBER_INSERT'")
   
   
-  echo "The element with atomic number $ELEMENT_ENTERED is $NUM_NAME($NUM_SYMBOL). It's a $NUM_TYPE, with a mass of $NUM_MASS amu. $NUM_NAME has a melting point of $NUM_MELT celsius and a boiling point of $NUM_BOIL celsius."
+  echo "The element with atomic number $ELEMENT_ENTERED is $NUM_NAME ($NUM_SYMBOL). It's a $NUM_TYPE, with a mass of $NUM_MASS amu. $NUM_NAME has a melting point of $NUM_MELT celsius and a boiling point of $NUM_BOIL celsius."
   fi
 else
 
@@ -70,7 +72,7 @@ SYM_BOIL=$($PSQL "SELECT boiling_point_celsius FROM properties FULL JOIN element
 
 SYM_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id = properties.type_id WHERE properties.ref='$SYM_NUM'")
 
-  echo "The element with atomic number $SYM_NUM is $SYM_NAME($GET_SYMBOL). It's a $SYM_TYPE, with a mass of $SYM_MASS amu. $SYM_NAME has a melting point of $SYM_MELT celsius and a boiling point of $SYM_BOIL celsius."
+  echo "The element with atomic number $SYM_NUM is $SYM_NAME ($GET_SYMBOL). It's a $SYM_TYPE, with a mass of $SYM_MASS amu. $SYM_NAME has a melting point of $SYM_MELT celsius and a boiling point of $SYM_BOIL celsius."
       fi
 
   else 
@@ -86,7 +88,7 @@ NAME_BOIL=$($PSQL "SELECT boiling_point_celsius FROM properties FULL JOIN elemen
 
 NAME_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id = properties.type_id WHERE properties.ref='$NAME_NUM'")
 
-  echo "The element with atomic number $NAME_NUM is $GET_NAME($NAME_SYM). It's a $NAME_TYPE, with a mass of $NAME_MASS amu. $GET_NAME has a melting point of $NAME_MELT celsius and a boiling point of $NAME_BOIL celsius."
+  echo "The element with atomic number $NAME_NUM is $GET_NAME ($NAME_SYM). It's a $NAME_TYPE, with a mass of $NAME_MASS amu. $GET_NAME has a melting point of $NAME_MELT celsius and a boiling point of $NAME_BOIL celsius."
   fi
 fi
 
@@ -95,3 +97,16 @@ fi
 
 
 #get element available
+
+
+#If you run ./element.sh 1
+  #The element with atomic number 1 is Hydrogen (H). It's a nonmetal, with a mass of 1.008 amu. Hydrogen has a melting point of -259.1 celsius and a boiling point of -252.9 celsius.
+  #The element with atomic number 1 is Hydrogen (H). It's a nonmetal, with a mass of 1.008 amu. Hydrogen has a melting point of -259.1 celsius and a boiling point of -252.9 celsius.
+
+#./element.sh H, o
+  #The element with atomic number 1 is Hydrogen (H). It's a nonmetal, with a mass of 1.008 amu. Hydrogen has a melting point of -259.1 celsius and a boiling point of -252.9 celsius
+  #The element with atomic number 1 is Hydrogen(H). It's a nonmetal, with a mass of 1.008 amu. Hydrogen has a melting point of -259.1 celsius and a boiling point of -252.9 celsius.
+
+#./element.sh Hydrogen
+  #The element with atomic number 1 is Hydrogen (H). It's a nonmetal, with a mass of 1.008 amu. Hydrogen has a melting point of -259.1 celsius and a boiling point of -252.9 celsius
+  #The element with atomic number 1 is Hydrogen (H). It's a nonmetal, with a mass of 1.008 amu. Hydrogen has a melting point of -259.1 celsius and a boiling point of -252.9 celsius.

@@ -61,9 +61,22 @@ SYM_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id =
 
   echo "The element with atomic number $SYM_NUM is $SYM_NAME($GET_SYMBOL). It's a $SYM_TYPE, with a mass of $SYM_MASS amu. $SYM_NAME has a melting point of $SYM_MELT celsius and a boiling point of $SYM_BOIL celsius."
       fi
+      
   else 
-  #echo "The element with atomic number $ELEMENT_ENTERED is $GET_NAME($GET_SYMBOL). It's a $GET_TYPE, with a mass of $GET_MASS amu. $GET_NAME has a melting point of $GET_MELT celsius and a boiling point of $GET_BOIL celsius."
-  echo "got name" $ELEMENT_ENTERED
+SYM_NUM=$($PSQL "SELECT ref FROM elements WHERE name='$GET_NAME'")
+
+NAME_SYM=$($PSQL "SELECT symbol FROM elements WHERE name='$GET_NAME'")
+
+NAME_MASS=$($PSQL "SELECT atomic_mass FROM properties FULL JOIN elements ON properties.atomic_number = elements.atomic_number WHERE properties.ref='$NAME_NUM'")
+
+NAME_MELT=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number = elements.atomic_number WHERE properties.ref='$NAME_NUM'")
+
+NAME_BOIL=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number=elements.atomic_number WHERE properties.ref='$NAME_NUM'")
+
+NAME_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id = properties.type_id WHERE properties.ref='$NAME_NUM'")
+
+  #echo "The element with atomic number $NAME_NUM is $GET_NAME($NAME_SYM). It's a $NAME_TYPE, with a mass of $NAME_MASS amu. $GET_NAME has a melting point of $NAME_MELT celsius and a boiling point of $NAME_BOIL celsius."
+  echo "got name" $GET_NAME
   fi
 fi
 

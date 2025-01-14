@@ -1,8 +1,19 @@
 #!/bin/bash
- PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
 
-echo -e "Please provide an element as an argument."
-read ELEMENT_ENTERED 
+
+
+ELEMENT_ENTERED=$1
+ PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
+if [[ ! $ELEMENT_ENTERED ]]
+then
+ echo "Please provide an element as an argument."
+ read ELEMENT_ENTERED
+fi
+
+#
+#I could not find that element in the database.
+############################
+
 
 if [[ $ELEMENT_ENTERED =~ [0-9] ]]
 then
@@ -21,7 +32,7 @@ NUM_MASS=$($PSQL "SELECT atomic_mass FROM properties FULL JOIN elements ON prope
 
 NUM_MELT=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number = elements.atomic_number WHERE properties.ref='$NUMBER_INSERT'")
 
-NUM_BOIL=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number = elements.atomic_number WHERE properties.ref='$NUMBER_INSERT'")
+NUM_BOIL=$($PSQL "SELECT boiling_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number = elements.atomic_number WHERE properties.ref='$NUMBER_INSERT'")
 
 NUM_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id = properties.type_id WHERE properties.ref='$NUMBER_INSERT'")
   
@@ -55,7 +66,7 @@ SYM_MASS=$($PSQL "SELECT atomic_mass FROM properties FULL JOIN elements ON prope
 
 SYM_MELT=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number = elements.atomic_number WHERE properties.ref='$SYM_NUM'")
 
-SYM_BOIL=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number=elements.atomic_number WHERE properties.ref='$SYM_NUM'")
+SYM_BOIL=$($PSQL "SELECT boiling_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number=elements.atomic_number WHERE properties.ref='$SYM_NUM'")
 
 SYM_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id = properties.type_id WHERE properties.ref='$SYM_NUM'")
 
@@ -71,7 +82,7 @@ NAME_MASS=$($PSQL "SELECT atomic_mass FROM properties FULL JOIN elements ON prop
 
 NAME_MELT=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number = elements.atomic_number WHERE properties.ref='$NAME_NUM'")
 
-NAME_BOIL=$($PSQL "SELECT melting_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number=elements.atomic_number WHERE properties.ref='$NAME_NUM'")
+NAME_BOIL=$($PSQL "SELECT boiling_point_celsius FROM properties FULL JOIN elements ON properties.atomic_number=elements.atomic_number WHERE properties.ref='$NAME_NUM'")
 
 NAME_TYPE=$($PSQL "SELECT type FROM types FULL JOIN properties ON types.type_id = properties.type_id WHERE properties.ref='$NAME_NUM'")
 
